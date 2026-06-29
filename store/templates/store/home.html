@@ -171,11 +171,7 @@ footer{
 
     <form method="GET">
         <div class="input-group">
-            <input type="text"
-                   name="q"
-                   class="form-control"
-                   placeholder="Search products...">
-
+            <input type="text" id="searchBox" class="form-control" placeholder="Search products...">
             <button class="btn btn-primary" type="submit">
                 Search
             </button>
@@ -229,7 +225,7 @@ border-radius:20px;">
 
         <div class="col-lg-3 col-md-4 col-sm-6">
 
-            <div class="product-card">
+            <div class="product-card product-item">
 
                 <div class="product-img">
                     {% if product.image %}
@@ -269,5 +265,22 @@ border-radius:20px;">
 <footer class="bg-dark text-white text-center p-3 mt-5">
     <p>&copy; 2026 TechBazaar. All Rights Reserved.</p>
 </footer>
+
+<script>
+document.getElementById("searchBox").addEventListener("keyup", function () {
+    let filter = this.value.toLowerCase();
+    let products = document.querySelectorAll(".product-item");
+
+    products.forEach(function (item) {
+        let text = item.innerText.toLowerCase();
+
+        if (text.includes(filter)) {
+            item.style.display = "block";
+        } else {
+            item.style.display = "none";
+        }
+    });
+});
+</script>
 </body>
 </html>
