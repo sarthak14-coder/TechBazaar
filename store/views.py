@@ -6,6 +6,7 @@ from .models import Product, Cart, Order
 from datetime import date, timedelta
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from . import views
 
 def home(request):
     products = Product.objects.all()
@@ -136,3 +137,6 @@ def orders(request):
 
 def contact(request):
     return render(request, 'store/contact.html')
+
+def about(request):
+    return render(request, 'store/about.html')
