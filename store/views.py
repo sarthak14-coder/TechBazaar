@@ -36,12 +36,10 @@ def add_to_cart(request, product_id):
         cart_item.save()
     messages.success(request, "Product added to cart successfully!")
     return redirect('home')
-
 def cart(request):
-    cart_items = Cart.objects.all()
+    cart_items = Cart.objects.filter(user=request.user)
 
     total_price = 0
-
     for item in cart_items:
         total_price += item.product.price * item.quantity
 
@@ -70,13 +68,11 @@ def product_detail(request, product_id):
     })
 
 
-from datetime import date, timedelta
 @login_required
 def checkout(request):
-    cart_items = Cart.objects.all()
+    cart_items = Cart.objects.filter(user=request.user)
 
     total_price = 0
-
     for item in cart_items:
         total_price += item.product.price * item.quantity
 
@@ -87,6 +83,7 @@ def checkout(request):
         'total_price': total_price,
         'delivery_date': delivery_date
     })
+
 def home(request):
     query = request.GET.get('q')
 
@@ -103,10 +100,9 @@ def home(request):
 def place_order(request):
     if request.method == "POST":
 
-        cart_items = Cart.objects.all()
+        cart_items = Cart.objects.filter(user=request.user)
 
         total_price = 0
-
         for item in cart_items:
             total_price += item.product.price * item.quantity
 
@@ -135,6 +131,7 @@ def place_order(request):
 
     return redirect('checkout')
 
+        
 
 
 def signup(request):
@@ -231,3 +228,16 @@ def add_review(request, product_id):
 
     return redirect("product_detail", product_id=product.id)
 
+
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+
+@login_required
+def invoice(request, order_id):
+    order = Order.objects.get(id=order_id, user=request.user)
+
+    html = render_to_string("store/invoice.html", {
+        "order": order
+    })
+
+    return HttpResponse(html)

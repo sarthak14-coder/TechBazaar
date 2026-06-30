@@ -1,11 +1,9 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Orders - TechBazaar</title>
-
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -27,14 +25,30 @@
         border-bottom:2px solid #0d6efd;
     }
 
+    .invoice-btn{
+        background:#ffc107;
+        color:black;
+        font-weight:600;
+        border-radius:8px;
+        padding:6px 12px;
+        text-decoration:none;
+        display:inline-block;
+        margin-top:10px;
+    }
+
+    .invoice-btn:hover{
+        background:#e0a800;
+        color:black;
+    }
+
     footer{
         background:#000;
         border-top:2px solid #0d6efd;
     }
 </style>
 
-
 </head>
+
 <body>
 
 <nav class="navbar navbar-dark">
@@ -46,7 +60,6 @@
 </nav>
 
 <div class="container mt-5">
-
 
 <h1 class="text-center mb-4">📦 My Orders</h1>
 
@@ -60,55 +73,44 @@
 
     <h5 class="text-primary">🛍 Products Ordered</h5>
 
-    <p class="mb-3">
-    {{ order.product_name }}
-    </p>
+    <p>{{ order.product_name }}</p>
 
     <p><strong>Name:</strong> {{ order.full_name }}</p>
-
     <p><strong>Total:</strong> ₹{{ order.total_price }}</p>
-
     <p><strong>Payment:</strong> {{ order.payment_method }}</p>
-
     <p><strong>Ordered On:</strong> {{ order.order_date }}</p>
-
     <p><strong>Delivery Date:</strong> {{ order.delivery_date }}</p>
 
     <p>
         <strong>Status:</strong>
 
-       {% if order.status == "Processing" %}
-    <span class="badge bg-warning text-dark">
-        Processing
-    </span>
+        {% if order.status == "Processing" %}
+            <span class="badge bg-warning text-dark">Processing</span>
 
-{% elif order.status == "Shipped" %}
-    <span class="badge bg-info">
-        Shipped
-    </span>
+        {% elif order.status == "Shipped" %}
+            <span class="badge bg-info">Shipped</span>
 
-{% elif order.status == "Delivered" %}
-    <span class="badge bg-success">
-        Delivered
-    </span>
+        {% elif order.status == "Delivered" %}
+            <span class="badge bg-success">Delivered</span>
 
-{% else %}
-    <span class="badge bg-secondary">
-        {{ order.status }}
-    </span>
-{% endif %}
+        {% else %}
+            <span class="badge bg-secondary">{{ order.status }}</span>
+        {% endif %}
     </p>
+
+    <a href="{% url 'invoice' order.id %}" class="invoice-btn">
+        🧾 Download Invoice
+    </a>
 
 </div>
 
 {% empty %}
 
-<div class="alert alert-warning">
+<div class="alert alert-warning text-dark">
     You have not placed any orders yet.
 </div>
 
 {% endfor %}
-
 
 </div>
 
