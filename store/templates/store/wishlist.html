@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Wishlist - TechBazaar</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body{
+            background:#050816;
+            color:white;
+        }
+
+        .navbar{
+            background:#000 !important;
+            border-bottom:2px solid #0d6efd;
+        }
+
+        .card{
+            background:#111827;
+            border:1px solid #1e293b;
+            color:white;
+            border-radius:15px;
+        }
+
+        footer{
+            background:#000;
+            border-top:2px solid #0d6efd;
+        }
+    </style>
+
+</head>
+<body>
+
+<nav class="navbar navbar-dark">
+    <div class="container">
+        <a class="navbar-brand fw-bold fs-3" href="/">
+            ⚡ Tech<span class="text-primary">Bazaar</span>
+        </a>
+    </div>
+</nav>
+
+<div class="container mt-5">
+
+<h2 class="text-center mb-4">❤️ My Wishlist</h2>
+
+{% for item in wishlist_items %}
+
+<div class="card p-3 mb-3">
+
+    <h4>{{ item.product.name }}</h4>
+
+    <p>₹{{ item.product.price }}</p>
+
+    <a href="{% url 'product_detail' item.product.id %}"
+       class="btn btn-primary">
+        View Product
+    </a>
+
+    <a href="{% url 'remove_from_wishlist' item.id %}"
+       class="btn btn-danger mt-2">
+        Remove
+    </a>
+
+</div>
+
+{% empty %}
+
+<div class="alert alert-warning">
+    Your Wishlist is empty.
+</div>
+
+{% endfor %}
+
+</div>
+
+<footer class="text-center text-white p-3 mt-5">
+    &copy; 2026 TechBazaar. All Rights Reserved.
+</footer>
+</body>
+</html>

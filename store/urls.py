@@ -13,4 +13,8 @@ urlpatterns = [
     path('orders/', views.orders, name='orders'),
     path('contact/', views.contact, name='contact'),
     path('about/', views.about, name='about'),
+    path('wishlist/', views.wishlist, name='wishlist'),
+    path('add-to-wishlist/<int:product_id>/', views.add_to_wishlist, name='add_to_wishlist'),
+    path('remove-from-wishlist/<int:wishlist_id>/', views.remove_from_wishlist, name='remove_from_wishlist'),
+
 ]

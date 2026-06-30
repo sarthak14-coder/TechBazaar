@@ -2,11 +2,12 @@ from django.shortcuts import render
 from .models import Product
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
-from .models import Product, Cart, Order
+from .models import Product, Cart, Order, Wishlist
 from datetime import date, timedelta
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from . import views
+from .models import Wishlist
 
 def home(request):
     query = request.GET.get('q')
@@ -154,3 +155,33 @@ def contact(request):
 
 def about(request):
     return render(request, 'store/about.html')
+
+@login_required
+def add_to_wishlist(request, product_id):
+    product = Product.objects.get(id=product_id)
+
+    Wishlist.objects.get_or_create(
+        user=request.user,
+        product=product
+    )
+
+    messages.success(request, "Product added to Wishlist ❤️")
+
+    return redirect('home')
+
+
+@login_required
+def wishlist(request):
+    wishlist_items = Wishlist.objects.filter(user=request.user)
+
+    return render(request, 'store/wishlist.html', {
+        'wishlist_items': wishlist_items
+    })
+
+
+@login_required
+def remove_from_wishlist(request, wishlist_id):
+    item = Wishlist.objects.get(id=wishlist_id, user=request.user)
+    item.delete()
+
+    return redirect('wishlist')
