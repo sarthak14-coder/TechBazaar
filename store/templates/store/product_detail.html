@@ -161,6 +161,44 @@
 
 </div>
 
+
+<hr>
+
+<h4>💬 Customer Reviews</h4>
+
+{% if user.is_authenticated %}
+
+<form method="POST" action="{% url 'add_review' product.id %}">
+    {% csrf_token %}
+
+    <textarea name="comment"
+              class="form-control mt-2"
+              placeholder="Write your review..."
+              required></textarea>
+
+    <button class="btn btn-success mt-2">
+        Submit Review
+    </button>
+</form>
+
+{% else %}
+<p>Login to write a review.</p>
+{% endif %}
+
+<hr>
+
+{% for review in product.review_set.all %}
+    <div class="card p-2 mb-2">
+        <strong>{{ review.user.username }}</strong>
+        <p>{{ review.comment }}</p>
+        <small class="text-muted">{{ review.created_at }}</small>
+    </div>
+{% empty %}
+    <p>No reviews yet.</p>
+{% endfor %}
+
+
+
 <footer class="text-center text-white p-3 mt-5">
     <p>&copy; 2026 TechBazaar. All Rights Reserved.</p>
 </footer>

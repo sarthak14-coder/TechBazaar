@@ -214,3 +214,20 @@ def remove_from_wishlist(request, wishlist_id):
     item.delete()
 
     return redirect('wishlist')
+
+
+@login_required
+def add_review(request, product_id):
+    product = Product.objects.get(id=product_id)
+
+    if request.method == "POST":
+        comment = request.POST.get("comment")
+
+        Review.objects.create(
+            user=request.user,
+            product=product,
+            comment=comment
+        )
+
+    return redirect("product_detail", product_id=product.id)
+
