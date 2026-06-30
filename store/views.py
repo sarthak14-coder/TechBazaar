@@ -92,9 +92,18 @@ def home(request):
     else:
         products = Product.objects.all()
 
+    cart_count = 0
+    wishlist_count = 0
+
+    if request.user.is_authenticated:
+        cart_count = Cart.objects.filter(user=request.user).count()
+        wishlist_count = Wishlist.objects.filter(user=request.user).count()
+
     return render(request, 'store/home.html', {
-        'products': products
-    })    
+        'products': products,
+        'cart_count': cart_count,
+        'wishlist_count': wishlist_count,
+    })
 
 @login_required
 def place_order(request):
