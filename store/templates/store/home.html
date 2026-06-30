@@ -26,6 +26,12 @@ body{
     letter-spacing: 1px;
 }
 
+.navbar-brand img{
+    border-radius:50%;
+    border:2px solid #0d6efd;
+    box-shadow:0 0 12px rgba(13,110,253,.5);
+}
+
 .navbar-brand span{
     text-shadow: 0 0 10px #0d6efd;
 }
@@ -142,8 +148,16 @@ footer{
 </head>
 <body>
 
-   <a class="navbar-brand fw-bold fs-2" href="/">
-    ⚡ Tech<span class="text-primary">Bazaar</span>
+   <a class="navbar-brand d-flex align-items-center" href="/">
+    <img src="/media/logo.png"
+         alt="TechBazaar Logo"
+         width="50"
+         height="50"
+         class="me-2">
+
+    <span class="fw-bold fs-2">
+        Tech<span class="text-primary">Bazaar</span>
+    </span>
 </a>
 <div class="navbar-nav ms-auto">
 
