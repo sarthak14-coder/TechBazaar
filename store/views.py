@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import Product
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
-from .models import Product, Cart, Order, Wishlist
+from .models import Product, Cart, Order, Wishlist, Rating
 from datetime import date, timedelta
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -55,12 +55,20 @@ def remove_from_cart(request, cart_id):
     item.delete()
     return redirect('cart')
 
+from django.db.models import Avg
+
 def product_detail(request, product_id):
     product = Product.objects.get(id=product_id)
 
-    return render(request, 'store/product_detail.html', {
-        'product': product
-    })    
+    average_rating = Rating.objects.filter(
+        product=product
+    ).aggregate(Avg("rating"))["rating__avg"]
+
+    return render(request, "store/product_detail.html", {
+        "product": product,
+        "average_rating": average_rating
+    })
+
 
 from datetime import date, timedelta
 @login_required
@@ -155,6 +163,27 @@ def contact(request):
 
 def about(request):
     return render(request, 'store/about.html')
+
+@login_required
+def rate_product(request, product_id):
+
+    product = Product.objects.get(id=product_id)
+
+    rating_value = request.POST.get("rating")
+
+    Rating.objects.update_or_create(
+        user=request.user,
+        product=product,
+        defaults={
+            "rating": rating_value
+        }
+    )
+
+    messages.success(request, "Thanks for rating this product ⭐")
+
+    return redirect("product_detail", product_id=product.id)
+
+
 
 @login_required
 def add_to_wishlist(request, product_id):
