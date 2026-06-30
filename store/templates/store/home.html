@@ -268,18 +268,24 @@ border-radius:20px;">
 
 <script>
 document.getElementById("searchBox").addEventListener("keyup", function () {
+
     let filter = this.value.toLowerCase();
+
     let products = document.querySelectorAll(".product-item");
 
-    products.forEach(function (item) {
+    products.forEach(function(item){
+
         let text = item.innerText.toLowerCase();
 
-        if (text.includes(filter)) {
-            item.style.display = "block";
-        } else {
-            item.style.display = "none";
+        if(text.includes(filter)){
+            item.parentElement.style.display = "";
         }
+        else{
+            item.parentElement.style.display = "none";
+        }
+
     });
+
 });
 </script>
 </body>
