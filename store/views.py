@@ -9,8 +9,16 @@ from django.contrib import messages
 from . import views
 
 def home(request):
-    products = Product.objects.all()
-    return render(request, 'store/home.html', {'products': products})
+    query = request.GET.get('q')
+
+    if query:
+        products = Product.objects.filter(name__icontains=query)
+    else:
+        products = Product.objects.all()
+
+    return render(request, 'store/home.html', {
+        'products': products
+    })
 
 from .models import Product, Cart
 from django.shortcuts import redirect
@@ -81,6 +89,7 @@ def home(request):
     return render(request, 'store/home.html', {
         'products': products
     })    
+
 @login_required
 def place_order(request):
     if request.method == "POST":
@@ -94,6 +103,10 @@ def place_order(request):
 
         delivery_date = date.today() + timedelta(days=5)
 
+        product_names = ", ".join(
+            [f"{item.product.name} (x{item.quantity})" for item in cart_items]
+        )
+
         Order.objects.create(
             user=request.user,
             full_name=request.POST['full_name'],
@@ -102,6 +115,7 @@ def place_order(request):
             city=request.POST['city'],
             pincode=request.POST['pincode'],
             payment_method=request.POST['payment'],
+            product_name=product_names,
             total_price=total_price,
             delivery_date=delivery_date
         )
@@ -111,6 +125,8 @@ def place_order(request):
         return render(request, 'store/order_success.html')
 
     return redirect('checkout')
+
+
 
 def signup(request):
     if request.method == 'POST':
@@ -124,8 +140,6 @@ def signup(request):
         form = UserCreationForm()
 
     return render(request, 'registration/signup.html', {'form': form})    
-
-    from django.contrib.auth.decorators import login_required
 
 @login_required
 def orders(request):

@@ -56,6 +56,14 @@
 
     <h4>Order #{{ order.id }}</h4>
 
+    <hr>
+
+    <h5 class="text-primary">🛍 Products Ordered</h5>
+
+    <p class="mb-3">
+    {{ order.product_name }}
+    </p>
+
     <p><strong>Name:</strong> {{ order.full_name }}</p>
 
     <p><strong>Total:</strong> ₹{{ order.total_price }}</p>

@@ -31,7 +31,11 @@ class Order(models.Model):
 
     payment_method = models.CharField(max_length=50)
 
+    product_name = models.TextField(default="")
+
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    product_name = models.CharField(max_length=200, default="")
 
     order_date = models.DateTimeField(auto_now_add=True)
 
