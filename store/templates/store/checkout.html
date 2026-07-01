@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -171,7 +170,8 @@ Debit / Credit Card
 <input type="text"
 class="form-control"
 placeholder="Enter UPI ID"
-name="upi_id">
+name="upi_id"
+id="upi_id">
 
 </div>
 
@@ -229,21 +229,22 @@ name="cvv">
 
 function showPaymentFields(type){
 
-document.getElementById("upiFields").style.display="none";
-document.getElementById("cardFields").style.display="none";
+    document.getElementById("upiFields").style.display = "none";
+    document.getElementById("cardFields").style.display = "none";
 
-if(type==="upi"){
-document.getElementById("upiFields").style.display="block";
-}
+    document.getElementById("upi_id").required = false;
 
-if(type==="card"){
-document.getElementById("cardFields").style.display="block";
-}
+    if(type == "upi"){
+        document.getElementById("upiFields").style.display = "block";
+        document.getElementById("upi_id").required = true;
+    }
+
+    if(type == "card"){
+        document.getElementById("cardFields").style.display = "block";
+    }
 
 }
 
 </script>
-
 </body>
 </html>
-
